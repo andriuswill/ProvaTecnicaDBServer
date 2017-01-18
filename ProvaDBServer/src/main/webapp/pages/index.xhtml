@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>ProvaDBSERVER</title>
+	
+    <h:outputScript library="js" name="scripts.js"/>
+</h:head>
+<h:body>		
+	<p:growl id="mensagem" />
+	
+	<p:fieldset legend="Segunda-Feira" style="margin-bottom:20px">
+		<h:outputText value="Votação encerrada..." rendered="#{votoBean.encerrada(2)}" style="margin-right: 30px;"/>
+		<p:commandButton value="Votar" actionListener="#{votoBean.novo}"  rendered="#{votoBean.aberta(2)}" onclick="PF('modal').show();" >
+			<f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+		</p:commandButton>
+		<p:commandButton value="Resultado" actionListener="#{votoBean.novo}" onclick="PF('modal2').show();" rendered="#{votoBean.hoje(2)}"/> 
+	</p:fieldset>
+	
+	<p:fieldset legend="Terça-Feira" style="margin-bottom:20px">
+		<h:outputText value="Votação encerrada..." rendered="#{votoBean.encerrada(3)}" />
+		<p:commandButton value="Votar" actionListener="#{votoBean.novo}"  rendered="#{votoBean.aberta(3)}" onclick="PF('modal').show();" >
+			<f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+		</p:commandButton>
+		<p:commandButton value="Resultado" actionListener="#{votoBean.novo}" onclick="PF('modal2').show();" rendered="#{votoBean.hoje(3)}"/> 
+	</p:fieldset>
+		
+	<p:fieldset legend="Quarta-Feira" style="margin-bottom:20px">
+		<h:outputText value="Votação encerrada..." rendered="#{votoBean.encerrada(4)}" style="margin-right: 30px;" />
+		<p:commandButton value="Votar" actionListener="#{votoBean.novo}"  rendered="#{votoBean.aberta(4)}" onclick="PF('modal').show();" >
+			<f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+		</p:commandButton>
+		<p:commandButton value="Resultado" actionListener="#{votoBean.novo}" onclick="PF('modal2').show();" rendered="#{votoBean.hoje(4)}"/> 
+	</p:fieldset>
+	
+	<p:fieldset legend="Quinta-Feira" style="margin-bottom:20px">
+		<h:outputText value="Votação encerrada..." rendered="#{votoBean.encerrada(5)}" style="margin-right: 30px;"/>
+		<p:commandButton value="Votar" actionListener="#{votoBean.novo}"  rendered="#{votoBean.aberta(5)}" onclick="PF('modal').show();" >
+			<f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+		</p:commandButton>
+		<p:commandButton value="Resultado" actionListener="#{votoBean.novo}" onclick="PF('modal2').show();" rendered="#{votoBean.hoje(5)}"/> 
+	</p:fieldset>
+	
+	<p:fieldset legend="Sexta-Feira" style="margin-bottom:20px">
+		<h:outputText value="Votação encerrada..." rendered="#{votoBean.encerrada(6)}" style="margin-right: 30px;"/>
+		<p:commandButton value="Votar" actionListener="#{votoBean.novo}"   rendered="#{votoBean.aberta(6)}" onclick="PF('modal').show();" >
+			<f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+		</p:commandButton>
+		<p:commandButton value="Resultado" actionListener="#{votoBean.novo}" onclick="PF('modal2').show();" rendered="#{votoBean.hoje(6)}"/> 
+	</p:fieldset>
+	
+	<p:dialog header="Vote no seu restaurante !!!" widgetVar="modal" modal="true" height="175" draggable="false" resizable="false" closable="true">
+    	
+    	 <h:form id="resutado">
+         	<h:panelGrid columns="2" id="painel"> 
+         		<p:outputLabel for="txtFuncionario" value="Funcionario: " indicateRequired="false"/>
+                <p:inputText value="#{votoBean.voto.funcionario}" 
+                             id="txtFuncionario"  maxlength="10" size="30"                              
+                             required="true" requiredMessage="Informe sua ID."/>
+                <p:outputLabel for="txtSenha" value="Senha: " indicateRequired="false"/>
+                <p:password    id="txtSenha"  maxlength="10" size="30"                              
+                             required="true" requiredMessage="Informe sua ID."/>            
+                <p:outputLabel value="Restaurant: "/>                
+                <p:selectOneMenu value="#{votoBean.voto.restaurante}">
+                	<f:selectItem itemLabel="Restaurant 1" itemValue="1" />
+                	<f:selectItem itemLabel="Restaurant 2" itemValue="2" />
+                	<f:selectItem itemLabel="Restaurant 3" itemValue="3" />
+                	<f:selectItem itemLabel="Restaurant 4" itemValue="4" />
+                	<f:selectItem itemLabel="Restaurant 5" itemValue="5" />
+                	<f:selectItem itemLabel="Restaurant 6" itemValue="6" />
+                </p:selectOneMenu>
+                
+                <p:commandButton value="Votar" actionListener="#{votoBean.salvar}" oncomplete="verifica(xhr, status, args, 'modal');"
+                				 update=":mensagem :painel2"/>
+         	</h:panelGrid>
+         </h:form>
+	</p:dialog>
+	
+	<p:dialog header="Vote no seu restaurante !!!" widgetVar="modal2" modal="true" height="180" draggable="false" resizable="false" closable="true">
+		<h:panelGrid columns="2" id="painel2">
+			 <p:outputLabel value="Restaurant 1:  "/> 
+			 <p:outputLabel value="#{votoBean.getVotos(1)}"/>
+			 
+			 <p:outputLabel value="Restaurant 2:  "/> 
+			 <p:outputLabel value="#{votoBean.getVotos(2)}"/>
+			 
+			 <p:outputLabel value="Restaurant 3:  "/> 
+			 <p:outputLabel value="#{votoBean.getVotos(3)}"/>
+			 
+			 <p:outputLabel value="Restaurant 4:  "/> 
+			 <p:outputLabel value="#{votoBean.getVotos(4)}"/>
+			 
+			 <p:outputLabel value="Restaurant 5:  "/> 
+			 <p:outputLabel value="#{votoBean.getVotos(5)}"/>
+			 
+			 <p:outputLabel value="Restaurant 6:  "/> 
+			 <p:outputLabel value="#{votoBean.getVotos(6)}"/>			 
+		</h:panelGrid>
+	</p:dialog>
+	
+</h:body>
+</html>
